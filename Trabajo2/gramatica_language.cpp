@@ -1,0 +1,133 @@
+//gramática #2
+
+#include <iostream>
+#include <vector>
+#include <sstream>
+#include <cctype>
+
+using namespace std;
+
+// Estructura para representar los tokens
+enum tipo_token {numero, operador, paren_izq, paren_der, final, invalido};
+
+struct Token {
+    tipo_token tipo;
+    string valor;
+};
+
+// Función para tokenizar la expresión
+vector<Token> tokenizar(const string& expresion) {
+    vector<Token> tokens;
+    stringstream ss(expresion);
+    char ch;
+    
+    while (ss >> ch) {
+        if (isdigit(ch)) {
+            string num(1, ch);
+            while (ss.peek() != EOF && isdigit(ss.peek())) { //EOF sirve para verificar si se ha llegado al final
+                ss >> ch;
+                num += ch;
+            }
+            tokens.push_back({numero, num});
+        } else if (ch == '+' || ch == '-' || ch == '*' || ch == '/') {
+            tokens.push_back({operador, string(1, ch)});
+        } else if (ch == '(') {
+            tokens.push_back({paren_izq, "("});
+        } else if (ch == ')') {
+            tokens.push_back({paren_der, ")"});
+        } else if (isspace(ch)) {
+            continue;
+        } else {
+            tokens.push_back({invalido, string(1, ch)});
+        }
+    }
+    tokens.push_back({final, ""}); 
+    return tokens;
+}
+
+
+class analizador_sintactico {
+public:
+    analizador_sintactico(const vector<Token>& tokens) : tokens(tokens), pos(0) {}
+
+    bool analizar() {
+        return expr() && token_actual().tipo == final;
+    }
+
+private:
+    vector<Token> tokens;
+    size_t pos;
+
+    Token token_actual() {
+        return tokens[pos];
+    }
+
+    void consumir() {
+        if (pos < tokens.size()) pos++;
+    }
+
+    bool expr() {
+        return term() && expresion_principal();
+    }
+
+    bool expresion_principal() {
+        if (token_actual().tipo == operador && (token_actual().valor == "+" || token_actual().valor == "-")) {
+            consumir(); 
+            return term() && expresion_principal();
+        }
+        return true; 
+    }
+
+    bool term() {
+        return factor() && termino_principal();
+    }
+
+    bool termino_principal() {
+        if (token_actual().tipo == operador && (token_actual().valor == "*" || token_actual().valor == "/")) {
+            consumir(); 
+            return factor() && termino_principal();
+        }
+        return true; 
+    }
+
+    bool factor() {
+        if (token_actual().tipo == numero) {
+            consumir(); // consumir numero
+            return true;
+        } else if (token_actual().tipo == paren_izq) {
+            consumir(); 
+            bool result = expr();
+            if (token_actual().tipo == paren_der) {
+                consumir(); 
+                return result;
+            }
+            return false;
+        }
+        return false; 
+    }
+};
+
+// Función para verificar si una expresión es válida
+bool expresion_valida(const string& expresion) {
+    vector<Token> tokens = tokenizar(expresion);
+    analizador_sintactico analizador_sintactico(tokens);
+    return analizador_sintactico.analizar();
+}
+
+int main() {
+    vector<string> expresiones = {
+        "3+4*5-6",        
+        "7*(6-8)-6",        
+        "(7*9)-5+(4*3)"
+    };
+
+    for (const string& expr : expresiones) {
+        if (expresion_valida(expr)) {
+            cout << "Expresión: " << expr << " pertenece a la gramática." << endl;
+        } else {
+            cout << "Expresión: " << expr << " NO pertenece a la gramática." << endl;
+        }
+    }
+
+    return 0;
+}
