@@ -1,0 +1,7 @@
+N reinas
+Consiste en colocar N reinas en un tablero de ajedrez de N × N de forma que ninguna reina ataque a otra. 
+En ajedrez, una reina puede moverse en línea recta horizontal, vertical y diagonal, por lo que:
+No puede haber dos reinas en la misma fila.
+No puede haber dos reinas en la misma columna.
+No puede haber dos reinas en la misma diagonal.
+Implementar en Haskell la solución del problema.

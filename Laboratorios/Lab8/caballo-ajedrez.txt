@@ -1,0 +1,1 @@
+Implementar en Haskell un programa que simule el recorrido de un caballo en un tablero de ajedrez, mostrando los movimientos válidos y  sin repetir casillas.
