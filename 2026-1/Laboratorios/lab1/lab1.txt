@@ -1,0 +1,4 @@
+Lab 01 - B: Juego de la Vida
+El usuario debe poder definir el tamaño de la matriz (N x M) y la cantidad de generaciones a simular.
+Al inicio, el programa debe colocar celdas vivas de forma aleatoria o permitir al usuario ingresar coordenadas iniciales.
+En cada generación, se debe imprimir en la consola el estado actual del tablero.
