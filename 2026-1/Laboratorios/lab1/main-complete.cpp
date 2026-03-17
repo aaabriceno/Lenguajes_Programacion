@@ -4,18 +4,21 @@
 
 #include <vector>
 using namespace std;
-
-bool vecinos(vector<vector<char>>&A, int x, int y, int N, int M) {
-	int contador = -1;
+ 
+bool vecinos(vector<vector<char>>& A, int x, int y, int N, int M) {
+	int contador = 0;
 	for (int i = -1; i < 2; i++) {
 		for (int j = -1; j < 2; j++) {
-			if (y + i >= 0 && x + j >= 0 && x + j < N && y+i < M) {
-				if (A[x + j][y + i] == 'X') contador++;
+			if (x + j >= 0 && x + j < N && y + i >= 0 && y + i < M) {
+				if (!(i == 0 && j == 0) && A[x + j][y + i] == 'X') {
+					contador++;
+				}
 			}
 		}
 	}
-	if (contador > 1 && contador < 4) return true;
-	if (A[x][y] == '_' && contador > 2) return true;
+
+	if (A[x][y] == 'X' && (contador == 2 || contador == 3)) return true;
+	if (A[x][y] == '_' && contador >= 3) return true;
 	return false;
 }
 
