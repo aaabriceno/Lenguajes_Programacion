@@ -1,0 +1,16 @@
+# Ejecutables y binarios compilados de C/C++
+*.exe
+*.out
+*.app
+
+# Archivos objeto e intermedios de compilacion
+*.o
+*.obj
+*.so
+*.a
+*.lib
+*.dll
+*.dylib
+
+# Binarios generados sin extension comun
+a.out
