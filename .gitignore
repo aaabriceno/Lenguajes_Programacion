@@ -14,3 +14,8 @@
 
 # Binarios generados sin extension comun
 a.out
+
+# Configuracion local del editor
+.vscode/
+*.code-workspace
+.idea/
