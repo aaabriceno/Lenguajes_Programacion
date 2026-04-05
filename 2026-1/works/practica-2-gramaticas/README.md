@@ -13,8 +13,8 @@ Se implemento la **gramatica 2** del PDF:
 Como la gramatica original tiene recursion izquierda, en el programa se usa una version equivalente apta para un analizador descendente recursivo:
 
 ```text
-expresion -> termino { (+ | -) termino }*
-termino   -> factor { (* | /) factor }*
+expresion -> termino { (+ | -) termino }
+termino   -> factor { (* | /) factor }
 factor    -> numero | ( expresion )
 ```
 
