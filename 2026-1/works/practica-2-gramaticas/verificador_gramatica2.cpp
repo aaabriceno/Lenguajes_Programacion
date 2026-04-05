@@ -7,6 +7,20 @@
 #include <vector>
 using namespace std;
 
+/*
+Gramatica original del PDF:
+<expr>   -> <expr> <opsuma> <term> | <term>
+<opsuma> -> + | -
+<term>   -> <term> <opmulti> <factor> | <factor>
+<opmulti>-> * | /
+<factor> -> numero | ( <expr> )
+
+Para implementarla con un parser descendente recursivo se usa esta version equivalente:
+expresion -> termino { (+ | -) termino }*
+termino   -> factor { (* | /) factor }*
+factor    -> numero | ( expresion )
+*/
+
 enum class TipoDeToken {
     Numero,
     Suma,
@@ -30,6 +44,7 @@ public:
     explicit AnalizadorLexico(const string& expresionOriginal)
         : expresionAritmetica(expresionOriginal), indiceActual(0) {}
 
+    // Convierte la entrada en una secuencia de tokens para facilitar el analisis sintactico.
     vector<TokenLexico> tokenizarExpresion() {
         vector<TokenLexico> tokensEncontrados;
 
@@ -119,6 +134,7 @@ public:
     }
 
 private:
+    // expresion -> termino { (+ | -) termino }*
     long long analizarExpresion() {
         long long valorAcumuladoDeLaExpresion = analizarTermino();
 
@@ -139,6 +155,7 @@ private:
         return valorAcumuladoDeLaExpresion;
     }
 
+    // termino -> factor { (* | /) factor }*
     long long analizarTermino() {
         long long valorAcumuladoDelTermino = analizarFactor();
 
@@ -161,6 +178,7 @@ private:
         return valorAcumuladoDelTermino;
     }
 
+    // factor -> numero | ( expresion )
     long long analizarFactor() {
         if (tokenActual().tipo == TipoDeToken::ParentesisIzquierdo) {
             avanzarAlSiguienteToken();
@@ -220,8 +238,20 @@ private:
 };
 
 int main() {
-    cout << "Gramatica elegida: <expr> -> <expr> <opsuma> <term> | <term>\n";
-    cout << "Ingrese una expresion por linea. Finalice con EOF (Ctrl+D en Linux/macOS, Ctrl+Z en Windows).\n\n";
+    cout << "Gramatica 2 del PDF\n";
+    cout << "Forma equivalente implementada en el programa - EBNF:\n";
+    cout << "  expresion -> termino { (+ | -) termino }\n";
+    cout << "  termino   -> factor { (* | /) factor }\n";
+    cout << "  factor    -> numero | ( expresion )\n\n";
+    cout << "Ingrese una expresion por linea. Finalice con EOF (Ctrl+D en Linux/macOS, Ctrl+Z en Windows).\n";
+    cout << "Si la expresion pertenece, el programa tambien muestra su valor.\n\n";
+
+    /*
+    Ejemplos rapidos para probar:
+    3+4*5-6
+    7*(6-8)-6
+    (7*9)-5+(4*3)
+    */
 
     string expresionIngresada;
     int numeroDeLineaEvaluada = 0;
