@@ -1,4 +1,5 @@
 //Gramatica 2 del PDF
+//Anthony Briceño Quiroz
 #include <cctype>
 #include <iostream>
 #include <sstream>
