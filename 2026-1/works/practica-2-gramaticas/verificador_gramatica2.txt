@@ -17,8 +17,8 @@ Gramatica original del PDF:
 <factor> -> numero | ( <expr> )
 
 Para implementarla con un parser descendente recursivo se usa esta version equivalente:
-expresion -> termino { (+ | -) termino }*
-termino   -> factor { (* | /) factor }*
+expresion -> termino { (+ | -) termino }
+termino   -> factor { (* | /) factor }
 factor    -> numero | ( expresion )
 */
 
